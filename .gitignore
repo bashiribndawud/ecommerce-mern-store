@@ -11,6 +11,8 @@ client/node_modules
 api/node_modules
 api/.env
 client/.env
+api/build
+client/build
 dist
 dist-ssr
 *.local
