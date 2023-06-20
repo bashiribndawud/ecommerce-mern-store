@@ -10,9 +10,11 @@ const ButtonStyled = styled.button`
   border: none;
   cursor: pointer;
   border-radius: 5px;
+  font-size: 1.2rem;
   svg {
     height: 20px;
-    margin-right: 5px;
+    margin: 0 5px;
+    
   }
   ${(props) =>
     props.size === "l" &&
@@ -31,6 +33,11 @@ const ButtonStyled = styled.button`
     css`
       background-color: #fff;
       color: #000;
+    `}
+    ${props => props.block && css`
+      display: block;
+      width: 100%;
+      background: green
     `}
 `;
 

@@ -1,40 +1,80 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import LogoIcon from "../assets/logoipsum-262.svg"
-
+import LogoIcon from "../assets/logoipsum-262.svg";
+import { useCartContext } from "../context/CartContext";
+import BarIcon from "./BarIcon";
 
 const StyledHeader = styled.header({
   backgroundColor: "#222",
-  padding: "25px 7%",
+  padding: "15px 7%",
   boxShadow: "15px 3px 13px rgba(0, 0, 0, 0.3)",
   position: "fixed",
   top: 0,
   left: 0,
   right: 0,
-  display: 'flex',
-  justifyContent: 'space-between'
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
 });
 
 const Logo = styled(Link)`
   color: gray;
   text-decoration: none;
   font-size: 1.5rem;
-  
 `;
 
 const StyeledNav = styled.nav`
+  ${(props) => props.mobileNavActive? 'display: block' : 'display: none'};
+  gap: 15px;
+  position: fixed;
+  top: 60px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background-color: #222;
+  transition: height .2s ease-out;
+  a{
+    margin-bottom: 1rem;
+  }
+  @media screen and (min-width: 768px) {
     display: flex;
-    gap: 20px;
-`
-
-const NavLinks = styled(Link)`
-    text-decoration: none;
-    font-size: 1.2rem;
-    color: gray;
+    align-items: center;
+    position: static;
+    padding: 0;
+  }
 `;
 
+const NavLinks = styled(Link)`
+  display: block;
+  text-decoration: none;
+  font-size: 1.2rem;
+  color: gray;
+`;
+
+const NavButton = styled.div`
+  background: transparent;
+  width: 30px;
+  height: 30px;
+  color: #fff;
+  cursor: pointer;
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+`;
+
+const NavWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
 const Header = () => {
+  const { cartProducts } = useCartContext();
+  const [mobileNavActive, setMobileNavActive] = useState(false);
+  function handleToggleNav(){
+    setMobileNavActive((prev) => !prev);
+  }
   return (
     <StyledHeader>
       <Logo to={"/home"}>
@@ -101,13 +141,16 @@ const Header = () => {
           ></path>{" "}
         </svg>
       </Logo>
-      <StyeledNav>
-        <NavLinks to={"/home"}>Home</NavLinks>
-        <NavLinks to={"/products"}>All Products</NavLinks>
-        <NavLinks to={"/categories"}>Categories</NavLinks>
-        <NavLinks to={"/account"}>Account</NavLinks>
-        <NavLinks to={"/cart"}>Cart</NavLinks>
+      <StyeledNav mobileNavActive={mobileNavActive}>
+            <NavLinks to={"/home"}>Home</NavLinks>
+            <NavLinks to={"/products"}>All Products</NavLinks>
+            <NavLinks to={"/categories"}>Categories</NavLinks>
+            <NavLinks to={"/account"}>Account</NavLinks>
+            <NavLinks to={"/cart"}>Cart({cartProducts.length})</NavLinks>
       </StyeledNav>
+          <NavButton onClick={handleToggleNav}>
+            <BarIcon />
+          </NavButton>
     </StyledHeader>
   );
 };

@@ -2,12 +2,13 @@ import React from "react";
 import { styled } from "styled-components";
 import Hero from "../assets/hero.jpg";
 import Button from "./Button";
+import { useCartContext } from "../context/CartContext";
 
 const FeaturedDiv = styled.div`
   padding: 6rem 7%;
   background-color: #222;
   color: #fff;
-  height: 40vh;
+  height: auto;
 `;
 const Title = styled.h2`
   margin: 0;
@@ -19,7 +20,16 @@ const Desc = styled.p`
 `;
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    div:nth-child(1) {
+      order: 0;
+    }
+  }
+  div:nth-child(1) {
+    order: 2;
+  }
+  grid-template-columns: 1fr;
   gap: 40px;
   img {
     width: 100%;
@@ -45,6 +55,10 @@ const FeaturedImage = styled.img`
 `
 
 const Featured = ({product}) => {
+  const { addProduct } = useCartContext();
+  function addFeaturedToCart() {
+    addProduct(product._id)
+  }
   return (
     <FeaturedDiv>
       <Wrapper>
@@ -58,7 +72,7 @@ const Featured = ({product}) => {
               <Button size="l" white primary>
                 Read more
               </Button>
-              <Button size="l">
+              <Button size="l" onClick={addFeaturedToCart}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
